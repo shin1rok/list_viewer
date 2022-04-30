@@ -1,4 +1,7 @@
+import 'package:bloc_provider/bloc_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:list_viewer/bloc/home_bloc.dart';
+import 'package:list_viewer/pages/home.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,7 +17,12 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.indigo,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: BlocProvider(
+        creator: (BuildContext context, BlocCreatorBag bag) {
+          return HomeBloc();
+        },
+        child: const Home(),
+      ),
     );
   }
 }
