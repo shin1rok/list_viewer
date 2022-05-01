@@ -24,25 +24,22 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     const title = 'List View';
-    return MaterialApp(
-      title: title,
-      home: Scaffold(
-        appBar: AppBar(
-          title: AppBarTitle(bloc: bloc, title: title, focusNode: _focusNode),
-          actions: [AppBarSearchAction(bloc: bloc)],
-        ),
-        body: StreamBuilder(
-          stream: bloc.articlesStream,
-          initialData: const <Article>[],
-          builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-            return ListView.builder(
-                itemCount: snapshot.data.length,
-                itemBuilder: (context, index) {
-                  Article article = snapshot.data[index];
-                  return ListTile(title: Text(article.title), subtitle: Text(article.id.toString()));
-                });
-          },
-        ),
+    return Scaffold(
+      appBar: AppBar(
+        title: AppBarTitle(bloc: bloc, title: title, focusNode: _focusNode),
+        actions: [AppBarSearchAction(bloc: bloc)],
+      ),
+      body: StreamBuilder(
+        stream: bloc.articlesStream,
+        initialData: const <Article>[],
+        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+          return ListView.builder(
+              itemCount: snapshot.data.length,
+              itemBuilder: (context, index) {
+                Article article = snapshot.data[index];
+                return ListTile(title: Text(article.title), subtitle: Text(article.id.toString()));
+              });
+        },
       ),
     );
   }

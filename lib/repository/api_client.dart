@@ -4,8 +4,6 @@ abstract class Client {
   Future<http.Response> getArticles();
 
   Future<http.Response> topicSearch(String topic);
-
-  Future<http.Response> getAddressFromZip(String zipCode);
 }
 
 class ApiClient implements Client {
@@ -20,13 +18,6 @@ class ApiClient implements Client {
   Future<http.Response> topicSearch(String topic) async {
     String baseUrl = 'https://zenn.dev/api/articles?order=daily&topicname=$topic&count=20&page=1';
     return await _get(baseUrl, {}, false);
-  }
-
-  @override
-  Future<http.Response> getAddressFromZip(String zipCode) async {
-    const baseUrl = 'https://zipcloud.ibsnet.co.jp/api/search';
-    final params = <String, String>{'zipcode': zipCode.toString(), 'limit': '1'};
-    return await _get(baseUrl, params, false);
   }
 
   Future<http.Response> _get(
