@@ -3,6 +3,8 @@ import 'package:http/http.dart' as http;
 abstract class Client {
   Future<http.Response> getArticles();
 
+  Future<http.Response> topicSearch(String topic);
+
   Future<http.Response> getAddressFromZip(String zipCode);
 }
 
@@ -11,6 +13,12 @@ class ApiClient implements Client {
   Future<http.Response> getArticles() async {
     const baseUrl = 'https://zenn.dev/api/articles?order=daily&topicname=flutter&count=20&page=1';
     // final params = <String, String>{'zipcode': zipCode.toString(), 'limit': '1'};
+    return await _get(baseUrl, {}, false);
+  }
+
+  @override
+  Future<http.Response> topicSearch(String topic) async {
+    String baseUrl = 'https://zenn.dev/api/articles?order=daily&topicname=$topic&count=20&page=1';
     return await _get(baseUrl, {}, false);
   }
 
