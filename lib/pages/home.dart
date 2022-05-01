@@ -23,7 +23,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    const title = 'Long List';
+    const title = 'List View';
     return MaterialApp(
       title: title,
       home: Scaffold(
