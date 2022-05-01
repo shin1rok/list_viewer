@@ -25,8 +25,12 @@ class HomeBloc extends Bloc {
 
   Stream<bool> get searchStream => _search.stream;
 
-  tapSearch() {
+  openSearch() {
     _search.sink.add(true);
+  }
+
+  closeSearch() {
+    _search.sink.add(false);
   }
 
   final _input = BehaviorSubject<String>.seeded('');

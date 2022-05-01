@@ -29,14 +29,7 @@ class _HomeState extends State<Home> {
       home: Scaffold(
         appBar: AppBar(
           title: AppBarTitle(bloc: bloc, title: title, focusNode: _focusNode),
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.search),
-              onPressed: () {
-                bloc.tapSearch();
-              },
-            )
-          ],
+          actions: [AppBarSearchAction(bloc: bloc)],
         ),
         body: StreamBuilder(
           stream: bloc.articlesStream,
@@ -51,6 +44,41 @@ class _HomeState extends State<Home> {
           },
         ),
       ),
+    );
+  }
+}
+
+class AppBarSearchAction extends StatelessWidget {
+  const AppBarSearchAction({
+    Key? key,
+    required this.bloc,
+  }) : super(key: key);
+
+  final HomeBloc bloc;
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder(
+      stream: bloc.searchStream,
+      initialData: false,
+      builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+        if (snapshot.data) {
+          return IconButton(
+            icon: const Icon(Icons.close),
+            onPressed: () {
+              bloc.closeSearch();
+              bloc.getArticles();
+            },
+          );
+        } else {
+          return IconButton(
+            icon: const Icon(Icons.search),
+            onPressed: () {
+              bloc.openSearch();
+            },
+          );
+        }
+      },
     );
   }
 }
