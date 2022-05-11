@@ -19,6 +19,7 @@ class _HomeState extends State<Home> {
     super.initState();
     bloc = BlocProvider.of<HomeBloc>(context);
     bloc.getArticles();
+    bloc.getFavArticles();
   }
 
   @override
@@ -37,7 +38,26 @@ class _HomeState extends State<Home> {
               itemCount: snapshot.data.length,
               itemBuilder: (context, index) {
                 Article article = snapshot.data[index];
-                return ListTile(title: Text(article.title), subtitle: Text(article.id.toString()));
+                return ListTile(
+                  title: Text(article.title),
+                  subtitle: Text(article.id.toString()),
+                  trailing: IconButton(
+                    onPressed: () {
+                      bloc.toggleFavorite(article);
+                    },
+                    icon: StreamBuilder(
+                        stream: bloc.favArticlesStream,
+                        initialData: const <Article>[],
+                        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                          final List<Article> list = snapshot.data;
+                          if (list.map<int>((e) => e.id).contains(article.id)) {
+                            return const Icon(Icons.favorite, color: Colors.pink);
+                          } else {
+                            return const Icon(Icons.favorite, color: Colors.grey);
+                          }
+                        }),
+                  ),
+                );
               });
         },
       ),

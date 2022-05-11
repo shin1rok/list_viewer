@@ -37,6 +37,22 @@ class HomeBloc extends Bloc {
 
   Sink<String> get addressInputAction => _input.sink;
 
+  final _favArticles = BehaviorSubject<List<Article>>();
+
+  Stream<List<Article>> get favArticlesStream => _favArticles.stream;
+
+  void toggleFavorite(Article article) {
+    // お気に入りがある場合は削除、ない場合は追加
+    // それによりお気に入りのStreamが更新されて画面のハートが切り替わる
+    getFavArticles();
+  }
+
+  void getFavArticles() async {
+    // 一旦仮でList全部取得する
+    var items = await _articleRepository.list();
+    _favArticles.sink.add(items);
+  }
+
   @override
   void dispose() {
     _articles.close();
